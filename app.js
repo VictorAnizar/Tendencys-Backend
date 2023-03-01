@@ -35,7 +35,9 @@ mongoose.connect(process.env.MONGO_URI);
 mongoose.set("debug", true);
 
 // usamos los modelos Aplications, Authorizations y Logs
+require('./models/Application')
 
+require('./models/Authorization')
 
 //  activar servidor backend en el puerto definido
 app.listen(process.env.PORT || 3000, () => {
