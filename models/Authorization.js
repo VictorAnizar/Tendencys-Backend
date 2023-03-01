@@ -11,10 +11,11 @@ const AuthorizationSchema = new mongoose.Schema({
 //En este caso el ID de la aplication será accesible pero si resulta en una vulnerabilidad, dejará de serlo
 AuthorizationSchema.methods.publicData = () => {
     return {
+        application_id: this.application_id,
         token: this.token
     }
 }
 
 
-// Cuando en alguna parte del código se mencione a "Aplication", nos estaremos refiriendo al esquema "AplicationSchema"
+// Cuando en alguna parte del código se mencione a "Authorization", nos estaremos refiriendo al esquema "AuthorizationSchema"
 mongoose.model("Authorization", AuthorizationSchema);
