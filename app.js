@@ -31,13 +31,13 @@ const mongoose = require('mongoose');
 // Conectarse a la base de datos mediante la URI
 mongoose.connect(process.env.MONGO_URI);
 
-// Entrar en modo depurador en mongoose
+// Entrar en modo depurador en mongoose.
 mongoose.set("debug", true);
 
 // usamos los modelos Aplications, Authorizations y Logs
 require('./models/Application')
-
 require('./models/Authorization')
+require('./models/Log')
 
 //  activar servidor backend en el puerto definido
 app.listen(process.env.PORT || 3000, () => {
