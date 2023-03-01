@@ -15,4 +15,4 @@ ApplicationSchema.methods.publicData = () => {
 
 
 // Cuando en alguna parte del código se mencione a "Application", nos estaremos refiriendo al esquema "ApplicationSchema"
-mongoose.model("Application", ApplicationSchema);
+module.exports = mongoose.model('Application', ApplicationSchema);

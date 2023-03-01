@@ -11,7 +11,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api', require('./routes/main.routes'));
 
 // Se indican qué respuestas del backend pueden ser compartidas a alguna peticion de un determinado origen
 app.use(
@@ -38,6 +37,9 @@ mongoose.set("debug", true);
 require('./models/Application')
 require('./models/Authorization')
 require('./models/Log')
+
+app.use('/api', require('./routes/main.routes'));
+
 
 //  activar servidor backend en el puerto definido
 app.listen(process.env.PORT || 3000, () => {

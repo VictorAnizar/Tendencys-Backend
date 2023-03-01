@@ -1,5 +1,5 @@
 // Se utiliza el módulo express-jwt ya que provee un middleware para express para validar JWTs a traves del modulo JWT 
-const jwt = require('express-jwt');
+const { expressjwt: expressJwt } = require('express-jwt');
 const secret = require('../config').secret;
 
 function getTokenFromHeader(req) {
@@ -10,14 +10,14 @@ function getTokenFromHeader(req) {
 }
 
 const auth = {
-  requerido: jwt({
+  requerido: expressJwt({
     secret: secret,  // La palabra secreta
     algorithms: ['HS256'], // El algoritmo de cifrado
     userProperty: 'usuario', // Con este atributo veremos el playload mediante req.usuario
     credentialsRequired: true,  // Si es verdadero, requiere de credenciales, si no, pasa al siguiente middleware
     getToken: getTokenFromHeader //Funcion que recibe la peticion y revuelve el token
   }),
-  opcional: jwt({
+  opcional: expressJwt({
     secret: secret,
     algorithms: ['HS256'],
     userProperty: 'usuario',
