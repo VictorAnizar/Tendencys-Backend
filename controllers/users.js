@@ -1,21 +1,45 @@
 const mongoose = require('mongoose');
+const Joi = require('joi');
 
 const User = mongoose.model('User');
 
 function createUser(req, res, next) {
 
-    const body = req.body,
-        password = body.password
 
-    // delete body.password
-    const user = new User(body)
 
-    user.crearPassword(password);
-    user.save()
-        .then(user => {
-            return res.status(200).json(user.toAuthJSON())
+    const { body } = req
+
+    const userSchemaJoi = Joi.object().keys({
+        name: Joi.string().required(),
+        username: Joi.string().required(),
+        password: Joi.string().required()
+    })
+
+    const result = userSchemaJoi.validate(body);
+
+    const { value, error } = result;
+
+    const valid = error == null;
+    if (!valid) {
+        res.status(422).json({
+            message: 'Fields name, username and password are required',
+            data: body
         })
-        .catch(next)
+    } else {
+        const password = body.password
+
+        // delete body.password
+        const user = new User(req.body)
+
+        user.crearPassword(password);
+        user.save()
+            .then(user => {
+                return res.status(200).json(user.toAuthJSON())
+            })
+            .catch(next)
+
+    }
+
 
 
 }
@@ -35,7 +59,7 @@ function getUser(req, res, next) {
 }
 
 function login(req, res, next) {
-   
+
 
     if (!req.body.username || !req.body.password) {
         return res.status(422).json({ error: { usuario: "Missing information to login" } })
