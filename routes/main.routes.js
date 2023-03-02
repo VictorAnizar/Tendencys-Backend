@@ -9,7 +9,7 @@ const controller = require('../controllers/main.controller');
 router.use('/applications', require('./applications'));
 
 // Se obtienen las rutas para authorizations
-// router.use('/authorizations', require('./authorizations'));
+router.use('/authorizations', require('./authorizations'));
 
 // // Se obtienen las rutas para logs
 // router.use('/logs', require('./logs'));
