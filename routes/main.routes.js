@@ -12,7 +12,7 @@ router.use('/applications', require('./applications'));
 router.use('/authorizations', require('./authorizations'));
 
 // // Se obtienen las rutas para logs
-// router.use('/logs', require('./logs'));
+router.use('/logs', require('./logs'));
 
 
 // router.get(`${prefix}/`, controller.all);
