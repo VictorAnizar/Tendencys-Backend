@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 
-
 const User = mongoose.model('User');
 
 function createUser(req, res, next) {
-   
+
     const body = req.body,
         password = body.password
 
@@ -36,12 +35,33 @@ function getUser(req, res, next) {
 }
 
 function login(req, res, next) {
-    let log = new Log(req.body);
-    log.save()
-        .then(log => res.send("Log created"))
-        .catch(next);
-}
+   
 
+    if (!req.body.username || !req.body.password) {
+        return res.status(422).json({ error: { usuario: "Missing information to login" } })
+    }
+
+    User.findOne({ username: req.body.username })
+        .then(user => {
+            console.log(user);
+
+            if (user != null) {
+                if (user.validarPassword(req.body.password)) {
+                    return res.status(200).json(user.toAuthJSON());
+                } else {
+                    return res.status(400).send("Error")
+                }
+
+            }
+            if (user == null) {
+                return res.status(400).send("Error")
+            }
+            // return 
+        }
+        )
+        .catch(next);
+
+}
 
 
 module.exports = {
