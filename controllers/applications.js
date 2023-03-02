@@ -1,13 +1,35 @@
+const Joi = require('joi');
 const mongoose = require('mongoose');
 
 
 const Application = mongoose.model('Application');
 
 function createApplication(req, res, next) {
-    let application = new Application(req.body);
-    application.save()
-        .then(app => res.send("Application created"))
-        .catch(next);
+
+    const { body } = req
+
+    const applicationSchemaJoi = Joi.object().keys({
+        name: Joi.string().required()
+    })
+
+    const result = applicationSchemaJoi.validate(body);
+
+    const { value, error } = result;
+
+    const valid = error == null;
+    if (!valid) {
+        res.status(422).json({
+            message: 'field name required',
+            data: body
+        })
+    } else {
+        let application = new Application(req.body);
+        application.save()
+            .then(app => res.send("Application created"))
+            .catch(next);
+    }
+
+
 }
 
 
@@ -26,7 +48,7 @@ function getApplications(req, res, next) {
 
 function updateApplication(req, res, next) {
     Application.findById(req.params.id)
-    .then(
+        .then(
             (app) => {
                 if (!app) {
                     return res.send("Unable to find application to update");
@@ -38,21 +60,21 @@ function updateApplication(req, res, next) {
                 }
 
                 app.save()
-                .then(
+                    .then(
                         //se manda respuesta al usuario
                         updated => res.status(200).send("Application updated")
                     )
-                .catch(next);
+                    .catch(next);
             }
         )
-    .catch(next)
+        .catch(next)
 }
 
 function deleteApplication(req, res, next) {
     Application.findByIdAndDelete({ _id: req.params.id })
-      .then(app => { res.send("Application deleted") })
-      .catch(next);
-  }
+        .then(app => { res.send("Application deleted") })
+        .catch(next);
+}
 
 
 module.exports = {

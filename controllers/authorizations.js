@@ -1,13 +1,39 @@
 const mongoose = require('mongoose');
 
+const Joi = require('joi');
 
 const Authorization = mongoose.model('Authorization');
 
 function createAuthorization(req, res, next) {
-    let authorization = new Authorization(req.body);
-    authorization.save()
-        .then(auth => res.send("Authorization created"))
-        .catch(next);
+    
+    const { body } = req
+
+    const authorizationSchemaJoi = Joi.object().keys({
+        application_id: Joi.string().required(),
+        token: Joi.string().required()
+    })
+
+    const result = authorizationSchemaJoi.validate(body);
+
+    const { value, error } = result;
+
+    const valid = error == null;
+    if (!valid) {
+        res.status(422).json({
+            message: 'Fields application_id and token required',
+            data: body
+        })
+    } else {
+        let authorization = new Authorization(req.body);
+        authorization.save()
+            .then(auth => res.send("Authorization created"))
+            .catch(next);
+    
+    
+    }
+
+
+
 }
 
 
@@ -26,7 +52,7 @@ function getAuthorization(req, res, next) {
 
 function updateAuthorization(req, res, next) {
     Authorization.findById(req.params.id)
-    .then(
+        .then(
             (auth) => {
                 if (!auth) {
                     return res.send("Unable to find Authorization to update");
@@ -38,21 +64,21 @@ function updateAuthorization(req, res, next) {
                 }
 
                 auth.save()
-                .then(
+                    .then(
                         //se manda respuesta al usuario
                         updated => res.status(200).send("Authorization updated")
                     )
-                .catch(next);
+                    .catch(next);
             }
         )
-    .catch(next)
+        .catch(next)
 }
 
 function deleteAuthorization(req, res, next) {
     Authorization.findByIdAndDelete({ _id: req.params.id })
-      .then(auth => { res.send("Authorization deleted") })
-      .catch(next);
-  }
+        .then(auth => { res.send("Authorization deleted") })
+        .catch(next);
+}
 
 
 module.exports = {
