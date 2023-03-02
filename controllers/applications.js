@@ -48,9 +48,16 @@ function updateApplication(req, res, next) {
     .catch(next)
 }
 
+function deleteApplication(req, res, next) {
+    Application.findByIdAndDelete({ _id: req.params.id })
+      .then(app => { res.send("Application deleted") })
+      .catch(next);
+  }
+
 
 module.exports = {
     createApplication,
     getApplications,
-    updateApplication
+    updateApplication,
+    deleteApplication
 }
