@@ -6,7 +6,7 @@ const {
     getAuthorization,
     updateAuthorization,
     deleteAuthorization,
-} = require('../controllers/authorizaions');
+} = require('../controllers/authorizations');
 
 const auth = require('./auth')
 
