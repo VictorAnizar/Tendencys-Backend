@@ -12,9 +12,9 @@ const {
 const auth = require('./auth')
 
 
-router.get('/', getUser);
-router.get('/:id', getUser);
-router.post('/signup', auth.opcional, createUser);
-router.post('/login', auth.opcional, login);
+router.get(`/${prefix}/`, getUser);
+router.get(`/${prefix}/:id`, getUser);
+router.post(`/${prefix}/signup`, auth.opcional, createUser);
+router.post(`/${prefix}/login`, auth.opcional, login);
 
 module.exports = router; 

@@ -13,10 +13,10 @@ const {
 const auth = require('./auth')
 
 
-router.get(`${prefix}/`, getLog);
-router.get(`${prefix}/:id`, getLog);
-router.post(`${prefix}/`, auth.requerido, createLog);
-router.put(`${prefix}/:id`, auth.requerido, updateLog);
-router.delete(`${prefix}/:id`, auth.requerido, deleteLog);
+router.get(`/${prefix}/`,auth.requerido, getLog);
+router.get(`/${prefix}/:id`,auth.requerido, getLog);
+router.post(`/${prefix}/`, auth.requerido, createLog);
+router.put(`/${prefix}/:id`, auth.requerido, updateLog);
+router.delete(`/${prefix}/:id`, auth.requerido, deleteLog);
 
 module.exports = router; 
