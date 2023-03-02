@@ -1,6 +1,8 @@
 //estructura del crud
 
 const router = require('express').Router();
+const prefix = 'logs';
+
 const {
     createLog,
     getLog,
@@ -11,10 +13,10 @@ const {
 const auth = require('./auth')
 
 
-router.get('/', getLog);
-router.get('/:id', getLog);
-router.post('/', auth.requerido, createLog);
-router.put('/:id', auth.requerido, updateLog);
-router.delete('/:id', auth.requerido, deleteLog);
+router.get(`${prefix}/`, getLog);
+router.get(`${prefix}/:id`, getLog);
+router.post(`${prefix}/`, auth.requerido, createLog);
+router.put(`${prefix}/:id`, auth.requerido, updateLog);
+router.delete(`${prefix}/:id`, auth.requerido, deleteLog);
 
 module.exports = router; 

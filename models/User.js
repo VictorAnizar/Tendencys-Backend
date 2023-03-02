@@ -1,12 +1,12 @@
 
 const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
+// Modulo que nos ofrece funcionalidades criptograficas
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const secret = require('../config').secret;
 
 
-const UserScheme = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   name: { type: String, required: true },
   username: {
     type: String,
@@ -16,7 +16,7 @@ const UserScheme = new mongoose.Schema({
     match: [/^[a-z0-9]+$/, "Username not valid"],
     index: true
   },
-  password: { type: String, required: true },
+  // password: { type: String, required: true },
 
   hash: String,
   salt: String
@@ -24,22 +24,21 @@ const UserScheme = new mongoose.Schema({
 
 
 
-UserScheme.plugin(uniqueValidator, { message: "Already exists" })
 
 
-UserScheme.methods.crearPassword = function (password) {
+UserSchema.methods.crearPassword = function (password) {
   this.salt = crypto.randomBytes(16).toString('hex');
   this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
     .toString("hex")
 }
 
-UserScheme.methods.validarPassword = function (password) {
+UserSchema.methods.validarPassword = function (password) {
   const newHash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
     .toString('hex')
   return this.hash === newHash
 }
 
-UserScheme.methods.generaJWT = function () {
+UserSchema.methods.generaJWT = function () {
   const today = new Date();
   const exp = new Date(today);
   exp.setDate(today.getDate() + 60);
@@ -51,7 +50,7 @@ UserScheme.methods.generaJWT = function () {
   }, secret)
 }
 
-UserScheme.methods.toAuthJSON = function () {
+UserSchema.methods.toAuthJSON = function () {
   return {
     id: this.id,
     name: this.name,
@@ -60,7 +59,7 @@ UserScheme.methods.toAuthJSON = function () {
   }
 }
 
-UsuarioScheme.methods.onlyPublicData = function (userFind) {
+UserSchema.methods.onlyPublicData = function (userFind) {
   return {
 
     id: userFind.id,
@@ -71,7 +70,7 @@ UsuarioScheme.methods.onlyPublicData = function (userFind) {
 }
 
 
-UsuarioScheme.methods.onlyPublicDataall = function (userFind) {
+UserSchema.methods.onlyPublicDataall = function (userFind) {
   var roots = userFind.map(
     function (usuario) {
       return {
@@ -85,4 +84,4 @@ UsuarioScheme.methods.onlyPublicDataall = function (userFind) {
   return roots
 }
 
-mongoose.model("User", UsuarioScheme);
+module.exports =mongoose.model("User", UserSchema);

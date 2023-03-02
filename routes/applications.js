@@ -1,6 +1,8 @@
 //estructura del crud
 
 const router = require('express').Router();
+const prefix = 'logs';
+
 const {
     createApplication,
     getApplications,
@@ -10,11 +12,15 @@ const {
 
 const auth = require('./auth')
 
-
-router.get('/', getApplications);
-router.get('/:id', getApplications);
-router.post('/', auth.requerido, createApplication);
-router.put('/:id', auth.requerido, updateApplication);
-router.delete('/:id', auth.requerido, deleteApplication);
+// Obtener todas las applications
+router.get(`/${prefix}/`, auth.requerido, getApplications);
+// Obtener una application por su id en la base de datos
+router.get(`${prefix}/:id`, auth.requerido, getApplications);
+// Crear nueva application
+router.post(`/${prefix}/`, auth.requerido, createApplication);
+// Actualizar Application
+router.put(`${prefix}/:id`, auth.requerido, updateApplication);
+// Eliminar application
+router.delete(`${prefix}/:id`, auth.requerido, deleteApplication);
 
 module.exports = router; 

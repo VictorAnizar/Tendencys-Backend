@@ -14,6 +14,10 @@ router.use('/authorizations', require('./authorizations'));
 // // Se obtienen las rutas para logs
 router.use('/logs', require('./logs'));
 
+// // Se obtienen las rutas para users
+router.use('/users', require('./users'));
+
+
 
 // router.get(`${prefix}/`, controller.all);
 // router.post(`${prefix}/`, controller.create);

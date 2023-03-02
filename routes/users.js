@@ -1,11 +1,13 @@
 //estructura del crud
 
 const router = require('express').Router();
+const prefix = 'logs';
+
 const {
     createUser,
     login,
     getUser
-} = require('../controllers/logs');
+} = require('../controllers/users');
 
 const auth = require('./auth')
 

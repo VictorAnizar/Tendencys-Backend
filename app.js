@@ -37,6 +37,8 @@ mongoose.set("debug", true);
 require('./models/Application')
 require('./models/Authorization')
 require('./models/Log')
+require('./models/User')
+
 
 app.use('/api', require('./routes/main.routes'));
 
